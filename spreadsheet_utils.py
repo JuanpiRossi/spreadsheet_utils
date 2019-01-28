@@ -74,7 +74,6 @@ class SpreadsheetObject():
             sheetName = sheet["properties"]["title"]
         cell = "'" + sheetName + "'!" + cell
         response = self.service.spreadsheets().values().update(spreadsheetId=self.id, range=cell, valueInputOption="RAW", responseValueRenderOption=['FORMATTED_VALUE', 'UNFORMATTED_VALUE', 'FORMULA'][format_], body={"values":[[value]]}).execute()
-        response = self.service.spreadsheets().values().batchUpdate(spreadsheetId=self.id, body=batch_update_values_request_body)
         return response
 
     def clear_cell(self,cell,format_=1, sheetId=None, sheetName=""):
@@ -375,4 +374,23 @@ class FormatObject():
         """
         self.data.append(raw)
         return raw
+
+
+sso = SpreadsheetObject("1To7sf10-ehkbWQ-3mHOiZG3vfVbe__t3viP8_rKx-tA")
+
+fo = FormatObject()
+
+fo.set_raw({
+      "unmergeCells": {
+        "range": {
+          "endColumnIndex": 10,
+          "sheetId": 0,
+          "endRowIndex": 5,
+          "startColumnIndex": 0,
+          "startRowIndex": 0
+        }
+      }})
+
+sso.format_cells(fo)
+
 
